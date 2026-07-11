@@ -1,4 +1,4 @@
-import logging
+from app.logger import setup_logger
 
 
 class CalculationObserver:
@@ -8,7 +8,7 @@ class CalculationObserver:
 
 class LoggingObserver(CalculationObserver):
     def __init__(self, logger=None):
-        self.logger = logger or logging.getLogger(__name__)
+        self.logger = logger or setup_logger()
 
     def update(self, calculation, history):
         self.logger.info(
