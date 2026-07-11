@@ -7,6 +7,18 @@ class Calculator:
     def __init__(self):
         self.history = CalculationHistory()
         self.caretaker = HistoryCaretaker()
+        self.observers = []
+
+    def register_observer(self, observer):
+        self.observers.append(observer)
+
+    def remove_observer(self, observer):
+        if observer in self.observers:
+            self.observers.remove(observer)
+
+    def notify_observers(self, calculation):
+        for observer in self.observers:
+            observer.update(calculation, self.history)
 
     def calculate(self, operation, operand_a, operand_b):
         self.caretaker.save(self.history.get_all())
@@ -15,6 +27,7 @@ class Calculator:
         result = calculation.calculate()
 
         self.history.add(calculation)
+        self.notify_observers(calculation)
 
         return result
 
